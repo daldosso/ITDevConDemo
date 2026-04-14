@@ -1,0 +1,11 @@
+{
+	"name": "ITDevConDemo",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"github.com/danieleteti/loggerpro": "^v2.1.0"
+	}
+}

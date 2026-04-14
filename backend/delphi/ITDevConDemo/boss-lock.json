@@ -1,0 +1,14 @@
+{
+	"hash": "d41d8cd98f00b204e9800998ecf8427e",
+	"updated": "2026-04-03T14:39:07.053721+02:00",
+	"installedModules": {
+		"github.com/danieleteti/loggerpro": {
+			"name": "loggerpro",
+			"version": "v2.1.0",
+			"hash": "9adb1dd0717027c8f5a2f8fccea7f043",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}

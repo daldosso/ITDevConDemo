@@ -1,0 +1,45 @@
+# Delphi compiled files
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.dcp
+*.drc
+*.map
+
+# Delphi project local files
+*.local
+*.identcache
+*.tvsconfig
+
+# Backup & temp
+*.~*
+*.bak
+*.tmp
+
+# Debug/Release folders
+Win32/
+Win64/
+Debug/
+Release/
+
+# History
+__history/
+
+# IDE
+*.dproj.local
+
+bin/
+output/
+modules/
+dmvcframework/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Postman (opzionale: tieni solo collection)
+postman/*.environment.json
