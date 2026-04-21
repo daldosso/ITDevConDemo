@@ -1,6 +1,7 @@
 object WebModule1: TWebModule1
   OnCreate = WebModuleCreate
   Actions = <>
-  Height = 47
-  Width = 166
+  Height = 59
+  Width = 208
+  PixelsPerInch = 120
 end

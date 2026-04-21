@@ -43,6 +43,15 @@ type
     [MVCPath('/time')]
     [MVCHTTPMethod([httpGET])]
     procedure GetTime;
+
+    [MVCPath('/auth/token')]
+    [MVCHTTPMethod([httpPOST])]
+    procedure GetToken;
+
+    [MVCPath('/users-auth/($id)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetUserAuthenticated(id: Integer);
+
   end;
 
 implementation
@@ -122,6 +131,47 @@ end;
 procedure TITDevConController.GetTime;
 begin
   Render(TJSONObject.Create.AddPair('now', DateTimeToStr(Now)));
+end;
+
+procedure TITDevConController.GetToken;
+var
+  Token: string;
+begin
+  Token := TGUID.NewGuid.ToString.Replace('{', '').Replace('}', '').Replace('-', '');
+
+  Render(
+    TJSONObject.Create
+      .AddPair('access_token', Token)
+      .AddPair('token_type', 'Bearer')
+      .AddPair('expires_in', '3600')
+  );
+end;
+
+procedure TITDevConController.GetUserAuthenticated(id: Integer);
+var
+  AuthHeader: string;
+begin
+  AuthHeader := Context.Request.Headers['Authorization'];
+
+  if not AuthHeader.StartsWith('Bearer ') then
+  begin
+    Render(401, 'Missing token');
+    Exit;
+  end;
+
+  (*
+  if AuthHeader <> 'Bearer mock-token-123456' then
+  begin
+    Render(401, 'Invalid token');
+    Exit;
+  end;
+  *)
+  Render(
+    TJSONObject.Create
+      .AddPair('id', id.ToString)
+      .AddPair('name', 'User ' + id.ToString)
+      .AddPair('auth', 'ok')
+  );
 end;
 
 end.
