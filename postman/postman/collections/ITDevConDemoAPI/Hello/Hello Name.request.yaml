@@ -1,0 +1,7 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/hello/{{name}}'
+order: 2000
+pathVariables:
+  - key: name
+    value: World

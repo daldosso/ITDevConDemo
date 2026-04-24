@@ -1,0 +1,8 @@
+name: ITDevCon-Local
+values:
+  - key: baseUrl
+    enabled: true
+    value: 'http://localhost:8080'
+  - key: token
+    enabled: true
+    value: ''

@@ -1,0 +1,16 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/api/auth/token'
+order: 1000
+scripts:
+  - type: afterResponse
+    code: |-
+      const json = pm.response.json();
+      const token = json.token ?? json.access_token ?? json.accessToken;
+      if (token) {
+          pm.environment.set("token", token);
+          console.log("Token salvato:", token);
+      } else {
+          console.warn("Token non trovato nella risposta:", JSON.stringify(json));
+      }
+    language: text/javascript
