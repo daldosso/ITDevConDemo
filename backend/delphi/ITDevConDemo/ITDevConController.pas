@@ -197,47 +197,53 @@ end;
 
 procedure TITDevConController.GetActivities;
 var
-  LType, LMinDist: string;
+  LType: string;
   LPage: Integer;
   LArr: TJSONArray;
-  LObj: TJSONObject;
-begin
-  // Postman Demo: Show how to read Query Parameters
-  LType := Context.Request.QueryStringParam('type');
-  LMinDist := Context.Request.QueryStringParam('min_dist');
 
-  // Handling empty page param to avoid conversion errors
+  // Helper locale per creare velocemente oggetti activity
+  procedure AddActivity(AID: string; AAthlete: string; AType: string; ADistance: Double; ACommute: Boolean);
+  var
+    LObj: TJSONObject;
+  begin
+    // Applichiamo un filtro base per tipo se specificato dall'utente
+    if (LType = '') or (LType.ToLower = AType.ToLower) then
+    begin
+      LObj := TJSONObject.Create;
+      LObj.AddPair('id', AID);
+      LObj.AddPair('athlete_name', AAthlete);
+      LObj.AddPair('type', AType);
+      LObj.AddPair('distance_meters', TJSONNumber.Create(ADistance));
+      if ACommute then
+        LObj.AddPair('is_commute', TJSONTrue.Create)
+      else
+        LObj.AddPair('is_commute', TJSONFalse.Create);
+      LArr.Add(LObj);
+    end;
+  end;
+
+begin
+  LType := Context.Request.QueryStringParam('type');
   if not TryStrToInt(Context.Request.QueryStringParam('page'), LPage) then
     LPage := 1;
 
   LArr := TJSONArray.Create;
 
-  // Mocking filtered results
-  if (LType = '') or (LType.ToLower = 'run') then
-  begin
-    LObj := TJSONObject.Create;
-    LObj.AddPair('id', '201');
-    LObj.AddPair('type', 'Run');
-    LObj.AddPair('distance', TJSONNumber.Create(8500));
-    // Use TJSONTrue.Create or TJSONFalse.Create
-    LObj.AddPair('is_commute', TJSONFalse.Create);
-    LArr.Add(LObj);
-  end;
+  AddActivity('301', 'Marco Rossi', 'Run', 12500.0, False);
+  AddActivity('302', 'Elena Bianchi', 'Ride', 45200.0, False);
+  AddActivity('303', 'Luca Verga', 'Ride', 8400.5, True);
+  AddActivity('304', 'Giulia Ferrari', 'Run', 5000.0, False);
+  AddActivity('305', 'Alessandro Sala', 'Walk', 3200.0, True);
+  AddActivity('306', 'Sofia Moretti', 'Swim', 1500.0, False);
+  AddActivity('307', 'Roberto Riva', 'Ride', 112000.0, False);
+  AddActivity('308', 'Francesca Costa', 'Run', 21097.0, False); // Mezza Maratona
+  AddActivity('309', 'Davide Leone', 'Ride', 15000.0, True);
+  AddActivity('310', 'Martina Russo', 'Run', 7500.0, False);
 
-  if (LType = '') or (LType.ToLower = 'ride') then
-  begin
-    LObj := TJSONObject.Create;
-    LObj.AddPair('id', '202');
-    LObj.AddPair('type', 'Ride');
-    LObj.AddPair('distance', TJSONNumber.Create(25000));
-    LObj.AddPair('is_commute', TJSONTrue.Create);
-    LArr.Add(LObj);
-  end;
-
-  // Final Response Object
   Render(TJSONObject.Create
     .AddPair('page', TJSONNumber.Create(LPage))
     .AddPair('items_per_page', TJSONNumber.Create(10))
+    .AddPair('total_results', TJSONNumber.Create(LArr.Count))
     .AddPair('filters_applied', LType)
     .AddPair('data', LArr)
   );
